@@ -61,7 +61,8 @@ class BinarySearchTree:
         if left_size > ind and self.left is not None:
             return self.left.select(ind)
         if left_size < ind and self.right is not None:
-            return self.right.select(ind)
+            #return self.right.select(ind)
+            return self.right.select(ind - left_size - 1)
         return None
 
 
@@ -88,6 +89,10 @@ class BinarySearchTree:
     
     returns the original (top level) tree - allows for easy chaining in tests
     '''
+
+    #Bad runtime with original code because it calls the size function
+    #through each iteration but it could just calculate it since the
+    #function is recursive
     def insert(self, key):
         if self.key is None:
             self.key = key
@@ -99,7 +104,10 @@ class BinarySearchTree:
             if self.right is None:
                 self.right = BinarySearchTree(self.debugger)
             self.right.insert(key)
-        self.calculate_sizes()
+        #self.calculate_sizes()
+        right_size = self.right.size if self.right else 0
+        left_size = self.left.size if self.left else 0
+        self.size = 1 + right_size + left_size
         return self
 
     
@@ -126,9 +134,93 @@ class BinarySearchTree:
         /
        11 
     '''
+    '''
     def rotate(self, direction, child_side):
-        # Your code goes here
+        if child_side == "R":
+            if direction == "L":
+                x = self.right
+                y = self.right.right
+                A = self.right.left
+                B = self.right.right.left
+                C = self.right.right.right
+                self.right = y
+                if y != None:
+                    y.left = x
+                if x != None:
+                    x.right = B
+                if A != None and B != None:
+                    self.right.left.size = A.size + B.size + 1
+                if A != None and B != None and C != None:
+                    self.right.size = A.size + B.size + C.size + 2
+            if direction == "R":
+                x = self.right.left
+                y = self.right
+                A = self.right.left.left
+                B = self.right.left.right
+                C = self.right.right
+                self.right = y
+                y.left = x
+                x.right = B
+                self.right.size = A.size + B.size + C.size + 2
+                self.right.right.size = B.size + C.size + 1
+        if child_side == "L":
+            if direction == "L":
+                x = self.left
+                y = self.left.right
+                A = self.left.left
+                B = self.left.right.left
+                C = self.left.right.right
+                self.left = y
+                y.left = x
+                x.right = B
+                self.left.left.size = A.size + B.size + 1
+                self.left.size = A.size + B.size + C.size + 2
+            if direction == "R":
+                x = self.left.left
+                y = self.left
+                A = self.left.left.left
+                B = self.left.left.right
+                C = self.left.right
+                self.left = x
+                x.right = y
+                y.left = B
+                self.left.size = A.size + B.size + C.size + 2
+                self.left.right.size = B.size + C.size + 1
         return self
+    '''
+
+    def rotate(self, direction, child_side):
+        if child_side == "R":
+            node = self.right
+        else:
+            node = self.left
+
+        if direction == "L":
+            pivot = node.right
+            node.right = pivot.left
+            pivot.left = node
+        else:
+            pivot = node.left
+            node.left = pivot.right
+            pivot.right = node
+
+        if child_side == "R":
+            self.right = pivot
+        else:
+            self.left = pivot
+
+        self.update_sizes()  # Update node sizes as needed
+        return self
+
+    def update_sizes(self):
+        if self.left:
+            self.left.update_sizes()
+        if self.right:
+            self.right.update_sizes()
+
+        left_size = self.left.size if self.left else 0
+        right_size = self.right.size if self.right else 0
+        self.size = left_size + right_size + 1
 
     def print_bst(self):
         if self.left is not None:
