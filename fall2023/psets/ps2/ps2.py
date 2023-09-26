@@ -134,60 +134,6 @@ class BinarySearchTree:
         /
        11 
     '''
-    '''
-    def rotate(self, direction, child_side):
-        if child_side == "R":
-            if direction == "L":
-                x = self.right
-                y = self.right.right
-                A = self.right.left
-                B = self.right.right.left
-                C = self.right.right.right
-                self.right = y
-                if y != None:
-                    y.left = x
-                if x != None:
-                    x.right = B
-                if A != None and B != None:
-                    self.right.left.size = A.size + B.size + 1
-                if A != None and B != None and C != None:
-                    self.right.size = A.size + B.size + C.size + 2
-            if direction == "R":
-                x = self.right.left
-                y = self.right
-                A = self.right.left.left
-                B = self.right.left.right
-                C = self.right.right
-                self.right = y
-                y.left = x
-                x.right = B
-                self.right.size = A.size + B.size + C.size + 2
-                self.right.right.size = B.size + C.size + 1
-        if child_side == "L":
-            if direction == "L":
-                x = self.left
-                y = self.left.right
-                A = self.left.left
-                B = self.left.right.left
-                C = self.left.right.right
-                self.left = y
-                y.left = x
-                x.right = B
-                self.left.left.size = A.size + B.size + 1
-                self.left.size = A.size + B.size + C.size + 2
-            if direction == "R":
-                x = self.left.left
-                y = self.left
-                A = self.left.left.left
-                B = self.left.left.right
-                C = self.left.right
-                self.left = x
-                x.right = y
-                y.left = B
-                self.left.size = A.size + B.size + C.size + 2
-                self.left.right.size = B.size + C.size + 1
-        return self
-    '''
 
     def rotate(self, direction, child_side):
         if child_side == "R":
