@@ -182,8 +182,9 @@ class BinarySearchTree:
                 self.left = y
                 y.left = x
                 x.right = B
-                self.left.left.size = A.size + B.size + 1
-                self.left.size = A.size + B.size + C.size + 2
+                if A is not None and B is not None and C is not None:
+                    self.left.left.size = A.size + B.size + 1
+                    self.left.size = A.size + B.size + C.size + 2
             if direction == "R":
                 x = self.left.left
                 y = self.left
@@ -193,8 +194,9 @@ class BinarySearchTree:
                 self.left = x
                 x.right = y
                 y.left = B
-                self.left.size = A.size + B.size + C.size + 2
-                self.left.right.size = B.size + C.size + 1
+                if A is not None and B is not None and C is not None:
+                    self.left.size = A.size + B.size + C.size + 2
+                    self.left.right.size = B.size + C.size + 1
         return self
 
     def print_bst(self):
