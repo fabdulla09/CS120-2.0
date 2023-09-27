@@ -152,13 +152,13 @@ class BinarySearchTree:
                 B = self.right.right.left
                 C = self.right.right.right
                 self.right = y
-                if y != None:
+                if y is not None:
                     y.left = x
-                if x != None:
+                if x is not None:
                     x.right = B
-                if A != None and B != None:
+                if A is not None and B is not None:
                     self.right.left.size = A.size + B.size + 1
-                if A != None and B != None and C != None:
+                if A is not None and B is not None and C is not None:
                     self.right.size = A.size + B.size + C.size + 2
             if direction == "R":
                 x = self.right.left
@@ -171,7 +171,7 @@ class BinarySearchTree:
                 x.right = B
                 self.right.size = A.size + B.size + C.size + 2
                 self.right.right.size = B.size + C.size + 1
-        if child_side == "L":
+        if child_side == "L" :
             if direction == "L":
                 x = self.left
                 y = self.left.right
