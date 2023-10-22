@@ -32,12 +32,28 @@ returns: An key-value pair (Kj, Vj) such that Kj is an i’th smallest key.
 
 def QuickSelect(arr, i):
     # Your code here
+    n = len(arr)
+    if n <= 1:
+        return arr[0]
+    
+    P = arr[get_random_index(arr)][0]
+
+    less = [x for x in arr if x[0] < P]
+    greater = [x for x in arr if x[0] > P]
+    equal = [x for x in arr if x[0] == P]
+
+    n_less = len(less)
+    n_equal = len(equal)
+
+    if i < n_less:
+        return QuickSelect(less, i)
+    elif i >= n_less + n_equal:
+        return QuickSelect(greater, i - n_less - n_equal)
+    else:
+        return equal[0]
 
     # Feel free to use get_random_index(arr) or get_random_int(start_inclusive, end_inclusive)
     # ... see the helper functions below
-    pass
-    return (0, -1)
-
 
 '''
 Uses MergeSort to resolve a number of queries where each query is to find an key-value pair (Kj, Vj) such that Kj is an i’th smallest key.
@@ -54,8 +70,16 @@ NOTE: This is different from the QuickSelect definition. This function takes in 
 def MergeSortSelect(arr, query_list):
     # Only call MergeSort once
     # ... MergeSort has already been implemented for you (see below)
-    pass
-    return [(0, -1)] * len(query_list)  # replace this line with your return
+    sorted_arr = MergeSort(arr)  # Call the MergeSort function once to sort the array
+    results = []
+
+    for i in query_list:
+        if 0 <= i < len(sorted_arr):
+            results.append(sorted_arr[i])
+        else:
+            results.append((0, -1))
+
+    return results
 
 
 ##################################
