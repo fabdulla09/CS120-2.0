@@ -129,7 +129,30 @@ def bfs_2_coloring(G, precolored_nodes=None):
     
     # TODO: Complete this function by implementing two-coloring using the colors 0 and 1.
     # If there is no valid coloring, reset all the colors to None using G.reset_colors()
-    
+    while len(visited) != G.N:
+        x = None
+        for N in range (G.N):
+            if N not in visited:
+                x = N
+        F = [x]
+        while len(F) != 0:
+            C = F[0]
+            
+            for N in G.edges[C]:
+                if N not in visited:
+                    F.append(N)
+                if G.colors[N] == 0 or G.colors == 1:
+                    G.colors[C] == 0 if G.colors[N] else 1
+
+            if not G.colors[C]:
+                G.colors[C] = 0
+            
+            F.remove(C)
+            visited.add(C)
+
+    if G.is_graph_coloring_valid():
+        return G.colors
+
     G.reset_colors()
     return None
 
