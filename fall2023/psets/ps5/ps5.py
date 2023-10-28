@@ -137,7 +137,7 @@ def bfs_2_coloring(G, precolored_nodes=None):
         F = [x]
         while len(F) != 0:
             C = F[0]
-            
+
             for N in G.edges[C]:
                 if N not in visited:
                     F.append(N)
@@ -164,7 +164,10 @@ def bfs_2_coloring(G, precolored_nodes=None):
 # Checks if subset is an independent set in G 
 def is_independent_set(G, subset):
     # TODO: Complete this function
-
+    for S in subset:
+        for C in G.edges[S]:
+            if C in subset:
+                return False
     return True
 
 '''
@@ -192,7 +195,12 @@ def is_independent_set(G, subset):
 # If no coloring is possible, resets all of G's colors to None and returns None.
 def iset_bfs_3_coloring(G):
     # TODO: Complete this function.
-
+    for i in range(G.N // 3 + 1):
+        for S in combinations(range(G.N), i):
+            if is_independent_set(G, S):
+                C = bfs_2_coloring(G, precolored_nodes=S)
+                if C is not None:
+                    return C
     G.reset_colors()
     return None
 
